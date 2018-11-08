@@ -1,5 +1,9 @@
 package project.nfaadventures;
 
+/**
+ * Class that generates an automaton from a given file
+ * @Author Pieter-Jan Lavaerts 1746060
+ */
 public class AutomatonParser
 {
     private Automaton mAutomaton;
@@ -10,7 +14,7 @@ public class AutomatonParser
      */
     public AutomatonParser(String filename)
     {
-        //do stuff
+        //TODO: write the AutomatonParser constructor.
     }
 
     public Automaton automaton()
