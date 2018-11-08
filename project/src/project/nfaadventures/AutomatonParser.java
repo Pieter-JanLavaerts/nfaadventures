@@ -17,6 +17,10 @@ public class AutomatonParser
         //TODO: write the AutomatonParser constructor.
     }
 
+    /**
+     * getter for automaton
+     * @return mAutomaton
+     */
     public Automaton automaton()
     {
         return mAutomaton;
