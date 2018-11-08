@@ -2,7 +2,7 @@ package project.nfaadventures;
 
 /**
  * Class that generates an automaton from a given file
- * @Author Pieter-Jan Lavaerts 1746060
+ * @author Pieter-Jan Lavaerts 1746060
  */
 public class AutomatonParser
 {
