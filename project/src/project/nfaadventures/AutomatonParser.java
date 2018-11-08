@@ -10,7 +10,7 @@ public class AutomatonParser
 
     /**
      * Constructor from file
-     * @param filename
+     * @param filename the file that contains the description of the automaton
      */
     public AutomatonParser(String filename)
     {
