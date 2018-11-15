@@ -72,7 +72,8 @@ public class State
     {
         List<State> nextStates = new ArrayList<>();
 
-        //Get all states from transition key
+        //Get all states from transition key if not null
+        if (mNextStates.get(transition) != null)
         nextStates.addAll(mNextStates.get(transition));
 
         return nextStates;
