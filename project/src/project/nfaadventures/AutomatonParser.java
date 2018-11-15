@@ -43,19 +43,23 @@ public class AutomatonParser
             List<State> states = new ArrayList<>();
             List<String> acceptLabels = new ArrayList<>();
 
-            while (line != null) {
+            while (line != null)
+            {
                 String acceptLabel = parseAcceptLine(line);
-                if (acceptLabel != null) {
+                if (acceptLabel != null)
+                {
                     acceptLabels.add(acceptLabel);
                 }
             }
 
             br.reset();
-            while (line != null) {
+            while (line != null)
+            {
                 parseLine(line, states, acceptLabels);
                 line = br.readLine();
             }
-        } finally {
+        } finally
+        {
             br.close();
         }
     }
@@ -63,7 +67,8 @@ public class AutomatonParser
     private static String parseAcceptLine(String line)
     {
         String words[] = line.split(" ");
-        if (words[1] != "-|") {
+        if (words[1] != "-|")
+        {
             return null;
         }
         return words[2];
@@ -88,9 +93,12 @@ public class AutomatonParser
         }
     }
 
-    private static State getState(List<State> states, List<String> acceptStates, String label) {
-        for (State s : states) {
-            if (s.getLabel() == label) {
+    private static State getState(List<State> states, List<String> acceptStates, String label)
+    {
+        for (State s : states)
+        {
+            if (s.GetLabel() == label)
+            {
                 return s;
             }
         }
