@@ -2,9 +2,7 @@ package project.nfaadventures;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 /**
  * Class that generates an automaton from a given file
@@ -13,34 +11,15 @@ import java.util.List;
 public class AutomatonParser
 {
     private Automaton mAutomaton;
-    private List<String> fileText;
+    private String mFileName;
 
     /**
      * Constructor from file
      * @param filename the file that contains the description of the automaton
      */
-    public AutomatonParser(String filename) throws IOException
+    public AutomatonParser(String filename)
     {
-        BufferedReader br = new BufferedReader(new FileReader(filename));
-        try {
-            String line = br.readLine();
-
-            while (line != null) {
-                fileText.add(line);
-                line = br.readLine();
-            }
-        } finally {
-            br.close();
-        }
-
-        try
-        {
-            parse();
-        }
-        catch(Exception e)
-        {
-            System.out.println("Badly formatted automaton file.");
-        }
+        mFileName = filename;
     }
 
     /**
@@ -57,9 +36,68 @@ public class AutomatonParser
      */
     public void parse() throws Exception
     {
-        for (String line : fileText) {
+        BufferedReader br = new BufferedReader(new FileReader(mFileName));
+        try {
+            String line = br.readLine();
+            br.mark(0);
+            List<State> states = new ArrayList<>();
+            List<String> acceptLabels = new ArrayList<>();
 
+            while (line != null) {
+                String acceptLabel = parseAcceptLine(line);
+                if (acceptLabel != null) {
+                    acceptLabels.add(acceptLabel);
+                }
+            }
+
+            br.reset();
+            while (line != null) {
+                parseLine(line, states, acceptLabels);
+                line = br.readLine();
+            }
+        } finally {
+            br.close();
         }
     }
 
+    private static String parseAcceptLine(String line)
+    {
+        String words[] = line.split(" ");
+        if (words[1] != "-|") {
+            return null;
+        }
+        return words[2];
+    }
+
+    private void parseLine(String line, List<State> states, List<String> acceptLabels)
+    {
+        String words[] = line.split(" ");
+        switch (words[2])
+        {
+            case "|-":
+                mAutomaton = new Automaton(getState(states, acceptLabels, words[2]));
+                break;
+            case "-|":
+                //already done when looping over the file the first time
+                break;
+            default:
+                State from = getState(states, acceptLabels, words[0]);
+                State to = getState(states, acceptLabels, words[2]);
+                from.AddNextState(words[1], to);
+                break;
+        }
+    }
+
+    private static State getState(List<State> states, List<String> acceptStates, String label) {
+        for (State s : states) {
+            if (s.getLabel() == label) {
+                return s;
+            }
+        }
+
+        //state does not exist yet
+        State s = new State(label, acceptStates.contains(label));
+        states.add(s);
+        return s;
+    }
 }
