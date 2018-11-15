@@ -25,7 +25,12 @@ public class Automaton {
      */
     public Automaton intersection(Automaton aut)
     {
+        State bogusStartState = new State("Bogus", false);
+        Automaton intersection = new Automaton(bogusStartState);
+
         //TODO: Write the intersection method.
+
+        return intersection;
     }
 
     /**
@@ -35,6 +40,10 @@ public class Automaton {
      */
     public String getShortestExample(boolean accept)
     {
+        String shortestExample = new String();
+
         //TODO: Write the getShortestExample method.
+
+        return shortestExample;
     }
 }
