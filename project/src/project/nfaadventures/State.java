@@ -3,6 +3,7 @@ package project.nfaadventures;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 
 /**
  * Represents a state as an object with references to the next states following the transition function.
@@ -23,6 +24,8 @@ public class State
     {
         this.mLabel = mLabel;
         this.mIsAcceptState = mIsAcceptState;
+
+        mNextStates = new TreeMap<>();
     }
 
     /**
@@ -32,7 +35,15 @@ public class State
      */
     public void AddNextState(String transition, State state)
     {
+        //Add to the list of states for transition as its key
+        //Does Key exist, if not make it.
+        if (! mNextStates.keySet().contains(transition))
+        {
+            mNextStates.put(transition, new ArrayList<>());
+        }
 
+        //Add state to the list //TODO: does get work or do we need to replace with a copy.add(state)
+        mNextStates.get(transition).add(state);
     }
 
     /**
@@ -43,7 +54,11 @@ public class State
     {
         List<State> allNextStates = new ArrayList<>();
 
-        //TODO: get all next states.
+        //For each key get all the states.
+        for (String key : mNextStates.keySet())
+        {
+            allNextStates.addAll(mNextStates.get(key));
+        }
 
         return allNextStates;
     }
@@ -57,8 +72,8 @@ public class State
     {
         List<State> nextStates = new ArrayList<>();
 
-        //TODO: get all next states from specified transition.
-
+        //Get all states from transition key
+        nextStates.addAll(mNextStates.get(transition));
 
         return nextStates;
     }
