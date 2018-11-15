@@ -78,4 +78,23 @@ public class State
 
         return nextStates;
     }
+
+    /**
+     * Getter method for label.
+     * @return the label
+     */
+    public String GetLabel()
+    {
+        return mLabel;
+    }
+
+    /**
+     * Getter method for isAcceptState.
+     * @return true if this state is accept state
+     */
+    public boolean IsAcceptState()
+    {
+        return mIsAcceptState;
+    }
+
 }
