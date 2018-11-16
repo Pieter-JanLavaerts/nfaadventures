@@ -32,7 +32,7 @@ public class AutomatonParser
     }
 
     /**
-     * Parses the file to initialize automaton
+     * Parses the file to initialize mAutomaton
      */
     public void parse() throws Exception
     {
@@ -48,9 +48,13 @@ public class AutomatonParser
                 if (acceptLabel != null) {
                     acceptLabels.add(acceptLabel);
                 }
+
+                line = br.readLine();
             }
 
-            br.reset();
+            br.close();
+            br = new BufferedReader(new FileReader(mFileName));
+            line = br.readLine();
             while (line != null) {
                 parseLine(line, states, acceptLabels);
                 line = br.readLine();
@@ -63,16 +67,16 @@ public class AutomatonParser
     private static String parseAcceptLine(String line)
     {
         String words[] = line.split(" ");
-        if (words[1] != "-|") {
+        if (!words[1].equals("-|")) {
             return null;
         }
-        return words[2];
+        return words[0];
     }
 
     private void parseLine(String line, List<State> states, List<String> acceptLabels)
     {
         String words[] = line.split(" ");
-        switch (words[2])
+        switch (words[1])
         {
             case "|-":
                 mAutomaton = new Automaton(getState(states, acceptLabels, words[2]));
@@ -90,7 +94,7 @@ public class AutomatonParser
 
     private static State getState(List<State> states, List<String> acceptStates, String label) {
         for (State s : states) {
-            if (s.getLabel() == label) {
+            if (s.GetLabel().equals(label)) {
                 return s;
             }
         }
