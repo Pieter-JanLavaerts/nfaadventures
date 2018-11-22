@@ -13,12 +13,15 @@ public class Testing
         System.out.println("--- Test Code Start ---");
         Testing testing = new Testing();
         testing.TestCode();
-        testing.ParserTesting();
     }
 
     public void TestCode()
     {
-       StateTesting();
+        StateTesting();
+        System.out.println("--- Test parser ---");
+        ParserTesting();
+        System.out.println("--- Test lengthMap ---");
+        LengthMapTesting();
     }
 
     private void StateTesting()
@@ -47,7 +50,8 @@ public class Testing
     {
         //Parser test code
         AutomatonParser parser = new AutomatonParser("src/project/nfaadventures/test.aut");
-        try{
+        try
+        {
             parser.parse();
             Automaton a = parser.automaton();
             if (a != null)
@@ -55,7 +59,33 @@ public class Testing
                 System.out.println("-> Automaton parser returned something! (so it probably works)");
             }
         }
-        catch (Exception e) {
+        catch (Exception e)
+        {
+            System.out.println("Parse error: " + e);
+        }
+    }
+
+    private void LengthMapTesting()
+    {
+        AutomatonParser parser = new AutomatonParser("src/project/nfaadventures/test.aut");
+
+        try
+        {
+            parser.parse();
+            Automaton a = parser.automaton();
+
+            if (a != null)
+            {
+                System.out.println("Making lengthmap");
+                //LengthMap lMap = new LengthMap(a.GetStartState());
+
+                System.out.println("Getting shortest accept path . . .");
+                //TODO: replace with asking the automaton which should do it himself
+                //System.out.println(lMap.GetShortestPathAccept());
+            }
+        }
+        catch (Exception e)
+        {
             System.out.println("Parse error: " + e);
         }
     }
