@@ -86,6 +86,24 @@ public class State implements Comparable<State>
     }
 
     /**
+     * Find what transition is used to get from this state to another given state.
+     * @param state requested state
+     * @return transition to that state (empty string if no transition) (only returns one of the possibilities)
+     */
+    public String GetTransitionTo(State state)
+    {
+        for (String transition : mNextStates.keySet())
+        {
+            if (mNextStates.get(transition).contains(state))
+            {
+                return transition;
+            }
+        }
+
+        return "";
+    }
+
+    /**
      * Getter method for label.
      * @return the label
      */
