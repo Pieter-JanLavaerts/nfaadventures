@@ -9,11 +9,17 @@ import java.util.TreeMap;
  * Represents a state as an object with references to the next states following the transition function.
  * @author Jeroen Peeters 1643057
  */
-public class State
+public class State implements Comparable<State>
 {
     private String mLabel;
     private Map<String, List<State>> mNextStates; //letter => transition(this, letter)
     private boolean mIsAcceptState;
+
+    @Override
+    public int compareTo(State other)
+    {
+        return other.GetLabel().compareTo(this.GetLabel());
+    }
 
     /**
      * Constructor for a state. (add next states later)

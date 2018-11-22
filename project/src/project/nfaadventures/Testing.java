@@ -46,13 +46,13 @@ public class Testing
     private void ParserTesting()
     {
         //Parser test code
-        AutomatonParser parser = new AutomatonParser("/home/hackyhacker/School/OGP2/nfaadventures/project/src/project/nfaadventures/test.aut");
+        AutomatonParser parser = new AutomatonParser("src/project/nfaadventures/test.aut");
         try{
             parser.parse();
             Automaton a = parser.automaton();
             if (a != null)
             {
-                System.out.println("Automaton parser works!");
+                System.out.println("-> Automaton parser returned something! (so it probably works)");
             }
         }
         catch (Exception e) {
