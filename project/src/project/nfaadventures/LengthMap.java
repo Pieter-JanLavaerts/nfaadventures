@@ -57,27 +57,65 @@ public class LengthMap
 
     /**
      * Get a list of states (start to accept state) that is the shortest list.
-     * @return list of states that's shortestpath (start to accept)
+     * @return list of states that's shortestpath (start to accept) (empty if no path)
      */
     public List<State> GetShortestPathAccept()
     {
         List<State> shortestPath = new ArrayList<>();
 
         //TODO: Implement getShortestPathAccept
+        //Find accept state with lowest value.
+        int distance = 0;
+        State shortestState = null;
+        for (State state : mLengthMap.keySet())
+        {
+            if (state.IsAcceptState())
+            {
+                if (shortestState == null || distance > mLengthMap.get(state))
+                {
+                    shortestState = state;
+                    distance = mLengthMap.get(state);
+                }
+            }
+        }
+
+        //Get path to this state
+        if (shortestState != null)
+        {
+            shortestPath = GetPathFromStart(shortestState);
+        }
 
         return shortestPath;
     }
 
     /**
      * Get a list of states (start to non-accept state) that is the shortest list.
-     * @return list of these states in order starting with start state.
+     * @return list of these states in order starting with start state. (empty if no path)
      */
     public List<State> GetShortestPathFail()
     {
         List<State> shortestPath = new ArrayList<>();
 
-        //TODO: Implement getShortestPathFail
-        //Start at startState and while this is an accept do it again for it's next states.
+        //Find non-accept state with lowest value.
+        int distance = 0;
+        State shortestState = null;
+        for (State state : mLengthMap.keySet())
+        {
+            if (! state.IsAcceptState())
+            {
+                if (shortestState == null || distance > mLengthMap.get(state))
+                {
+                    shortestState = state;
+                    distance = mLengthMap.get(state);
+                }
+            }
+        }
+
+        //Get path to this state (shortest path).
+        if (shortestState != null)
+        {
+            shortestPath = GetPathFromStart(shortestState);
+        }
 
         return shortestPath;
     }
