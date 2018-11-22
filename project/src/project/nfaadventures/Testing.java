@@ -13,6 +13,7 @@ public class Testing
         System.out.println("--- Test Code Start ---");
         Testing testing = new Testing();
         testing.TestCode();
+        testing.ParserTesting();
     }
 
     public void TestCode()
@@ -40,5 +41,22 @@ public class Testing
         System.out.println(state.GetNextStatesFor("d"));
 
         System.out.println("-> State works");
+    }
+
+    private void ParserTesting()
+    {
+        //Parser test code
+        AutomatonParser parser = new AutomatonParser("/home/hackyhacker/School/OGP2/nfaadventures/project/src/project/nfaadventures/test.aut");
+        try{
+            parser.parse();
+            Automaton a = parser.automaton();
+            if (a != null)
+            {
+                System.out.println("Automaton parser works!");
+            }
+        }
+        catch (Exception e) {
+            System.out.println("Parse error: " + e);
+        }
     }
 }
