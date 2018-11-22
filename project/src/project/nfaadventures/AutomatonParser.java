@@ -39,9 +39,10 @@ public class AutomatonParser
         BufferedReader br = new BufferedReader(new FileReader(mFileName));
         try {
             String line = br.readLine();
-            br.mark(0);
             List<State> states = new ArrayList<>();
             List<String> acceptLabels = new ArrayList<>();
+            State startState = null;
+            Set<String> alphabet = new HashSet<>();
 
             while (line != null)
             {
@@ -57,8 +58,19 @@ public class AutomatonParser
             br = new BufferedReader(new FileReader(mFileName));
             line = br.readLine();
             while (line != null) {
-                parseLine(line, states, acceptLabels);
+                State result = parseLine(line, states, acceptLabels, alphabet);
+                if (result != null) {
+                    startState = result;
+                }
                 line = br.readLine();
+            }
+            if (startState != null)
+            {
+                mAutomaton = new Automaton(startState, alphabet);
+            }
+            else
+            {
+                throw new Exception("Faulty automaton file: no start state");
             }
         } finally {
             br.close();
@@ -74,26 +86,27 @@ public class AutomatonParser
         return words[0];
     }
 
-    private void parseLine(String line, List<State> states, List<String> acceptLabels)
+    private State parseLine(String line, List<State> states, List<String> acceptLabels, Set<String> alphabet)
     {
         String words[] = line.split(" ");
         switch (words[1])
         {
             case "|-":
-                mAutomaton = new Automaton(getState(states, acceptLabels, words[2]));
-                break;
+                return getState(states, acceptLabels, words[2]);
             case "-|":
                 //already done when looping over the file the first time
-                break;
+                return null;
             default:
+                alphabet.add(words[1]);
                 State from = getState(states, acceptLabels, words[0]);
                 State to = getState(states, acceptLabels, words[2]);
                 from.AddNextState(words[1], to);
-                break;
+                return null;
         }
     }
 
-    private static State getState(List<State> states, List<String> acceptStates, String label) {
+    private static State getState(List<State> states, List<String> acceptStates, String label)
+    {
         for (State s : states) {
             if (s.GetLabel().equals(label)) {
                 return s;

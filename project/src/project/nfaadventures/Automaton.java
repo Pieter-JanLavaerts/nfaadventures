@@ -1,5 +1,8 @@
 package project.nfaadventures;
 
+import java.util.HashSet;
+import java.util.Set;
+
 /**
  * Models a NFA Automaton
  * @author Pieter-Jan Lavaerts 1746060
@@ -7,15 +10,17 @@ package project.nfaadventures;
 public class Automaton {
     private State mStartState;
     private LengthMap mLengthMap;
+    private Set<String> mAlphabet;
 
     /**
      * Constructor of automaton
      * @param startState the startstate of the automaton
      */
-    public Automaton(State startState)
+    public Automaton(State startState, Set<String> alphabet)
     {
         mStartState = startState;
         mLengthMap = new LengthMap(startState);
+        mAlphabet = alphabet;
     }
 
     /**
@@ -26,7 +31,7 @@ public class Automaton {
     public Automaton intersection(Automaton aut)
     {
         State bogusStartState = new State("Bogus", false);
-        Automaton intersection = new Automaton(bogusStartState);
+        Automaton intersection = new Automaton(bogusStartState, new HashSet<>());
 
         //TODO: Write the intersection method.
 
