@@ -58,7 +58,6 @@ public class Automaton {
      */
     public String getShortestExample(boolean accept)
     {
-        String shortestExample = new String();
         List<State> ShortestPath;
 
         if (accept) {
@@ -68,7 +67,13 @@ public class Automaton {
             ShortestPath = mLengthMap.GetShortestPathFail();
         }
 
-        String result = null;
+        if (ShortestPath.size() == 0)
+        {
+            //There is no path
+            return null;
+        }
+
+        String result = new String();
         for (int i = 0; i < ShortestPath.size()-1; i++)
         {
             String transition = ShortestPath.get(i).GetTransitionTo(ShortestPath.get(i+1));
