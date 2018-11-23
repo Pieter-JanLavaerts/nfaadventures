@@ -1,6 +1,7 @@
 package project.nfaadventures;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -8,9 +9,21 @@ import java.util.Set;
  * @author Pieter-Jan Lavaerts 1746060
  */
 public class Automaton {
+
     private State mStartState;
     private LengthMap mLengthMap;
+
+    public Set<String> GetAlphabet()
+    {
+        return mAlphabet;
+    }
+
     private Set<String> mAlphabet;
+
+    public State GetStartState()
+    {
+        return mStartState;
+    }
 
     /**
      * Constructor of automaton
@@ -46,9 +59,33 @@ public class Automaton {
     public String getShortestExample(boolean accept)
     {
         String shortestExample = new String();
+        List<State> ShortestPath;
 
-        //TODO: Write the getShortestExample method.
+        if (accept) {
+            ShortestPath = mLengthMap.GetShortestPathAccept();
+        }
+        else {
+            ShortestPath = mLengthMap.GetShortestPathFail();
+        }
 
-        return shortestExample;
+        String result = null;
+        for (int i = 0; i < ShortestPath.size()-1; i++)
+        {
+            String transition = ShortestPath.get(i).GetTransitionTo(ShortestPath.get(i+1));
+            if (!transition.equals("$"))
+            {
+                result += transition;
+            }
+        }
+
+        return result;
+    }
+
+    public Automaton Merge(Automaton other)
+    {
+        Set<String> newAlphabet = new HashSet<>();
+        newAlphabet.addAll(GetAlphabet());
+        newAlphabet.addAll(other.GetAlphabet());
+        return new Automaton(GetStartState().Merge(newAlphabet, other.GetStartState()), newAlphabet);
     }
 }

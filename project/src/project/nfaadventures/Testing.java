@@ -22,6 +22,8 @@ public class Testing
         ParserTesting();
         System.out.println("--- Test lengthMap ---");
         LengthMapTesting();
+        System.out.println("--- Test merging Automatons ---");
+        MergeTesting();
     }
 
     private void StateTesting()
@@ -87,6 +89,29 @@ public class Testing
         catch (Exception e)
         {
             System.out.println("Parse error: " + e);
+        }
+    }
+
+    private void MergeTesting()
+    {
+        AutomatonParser parser = new AutomatonParser("src/project/nfaadventures/test.aut");
+        try
+        {
+            parser.parse();
+        }
+        catch (Exception e)
+        {
+            System.out.println("Error parsing for mergetexst: e");
+        }
+
+        Automaton a = parser.automaton();
+        Automaton b = parser.automaton();
+        Automaton merged = a.Merge(b);
+        if (merged != null) {
+            System.out.println("Merging didn't blow up!");
+        }
+        else {
+            System.out.println("Merging probably went wrong!");
         }
     }
 }

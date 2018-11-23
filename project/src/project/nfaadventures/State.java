@@ -1,9 +1,6 @@
 package project.nfaadventures;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
+import java.util.*;
 
 /**
  * Represents a state as an object with references to the next states following the transition function.
@@ -121,4 +118,47 @@ public class State implements Comparable<State>
         return mIsAcceptState;
     }
 
+    public State Merge(Set<String> alphabet, State other)
+    {
+        //call mergeHelper which recursively initializes all states using the transition function
+        Set<State> states = new TreeSet<>();
+        MergeHelper(alphabet, null, null, states, other);
+
+        return new State("0 0", false);
+    }
+
+    private void MergeHelper(Set<String> alphabet, State previousState, String transition, Set<State> states, State other)
+    {
+        //create new merged state and add it to states
+        boolean newIsAcceptState = IsAcceptState() && other.IsAcceptState();
+        String newLabel = GetLabel() + " " + other.GetLabel();
+        State newState = new State(newLabel, newIsAcceptState);
+        states.add(newState);
+
+        //adding the transition
+        if (previousState != null) {
+            previousState.AddNextState(transition, newState);
+        }
+
+        //recursively create states from transition function
+        //if states already exists in states don't recurse
+        //for (State thisNextState : GetAllNextStates())
+        //{
+        //    for (State otherNextState : GetAllNextStates())
+        //    {
+        //        //if the state with two merged labels doesn't exist yet
+        //        String recursiveTestLabel = thisNextState.GetLabel() + " " + otherNextState.GetLabel();
+        //        if (!states.contains(new State(thisNextState.GetLabel() + " " + otherNextState.GetLabel(), false)))
+        //        {
+        //            thisNextState.MergeHelper(newState, null, states, otherNextState);
+        //        }
+        //    }
+
+        //recursively create states
+        //loop over alphabet and get allnextstates for both this and other
+        for (String letter : alphabet)
+        {
+
+        }
+    }
 }
