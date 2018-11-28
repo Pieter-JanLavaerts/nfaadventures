@@ -12,14 +12,22 @@ public class Automaton {
 
     private State mStartState;
     private LengthMap mLengthMap;
+    private Set<String> mAlphabet;
 
+    /**
+     * Getter for mAlphabet
+     * @return mAlphabet
+     */
     public Set<String> GetAlphabet()
     {
         return mAlphabet;
     }
 
-    private Set<String> mAlphabet;
 
+    /**
+     * Getter for mStartState
+     * @return mStartState
+     */
     public State GetStartState()
     {
         return mStartState;
@@ -34,21 +42,6 @@ public class Automaton {
         mStartState = startState;
         mLengthMap = new LengthMap(startState);
         mAlphabet = alphabet;
-    }
-
-    /**
-     * Calculates intersection of this and a given automaton.
-     * @param aut given automaton
-     * @return new automaton that's the intersection of this and aut
-     */
-    public Automaton intersection(Automaton aut)
-    {
-        State bogusStartState = new State("Bogus", false);
-        Automaton intersection = new Automaton(bogusStartState, new HashSet<>());
-
-        //TODO: Write the intersection method.
-
-        return intersection;
     }
 
     /**
@@ -86,11 +79,18 @@ public class Automaton {
         return result;
     }
 
-    public Automaton Merge(Automaton other)
+    /**
+     * Intersects two automatons
+     * @param A the first automaton
+     * @param B the second automaton
+     * @return A Intersect B
+     * @author Pieter-Jan Lavaerts
+     */
+    public static Automaton Intersect(Automaton A, Automaton B)
     {
         Set<String> newAlphabet = new HashSet<>();
-        newAlphabet.addAll(GetAlphabet());
-        newAlphabet.addAll(other.GetAlphabet());
-        return new Automaton(GetStartState().Merge(newAlphabet, other.GetStartState()), newAlphabet);
+        newAlphabet.addAll(A.GetAlphabet());
+        newAlphabet.retainAll(B.GetAlphabet());
+        return new Automaton(State.Intersect(A.GetStartState(), B.GetStartState()), newAlphabet);
     }
 }

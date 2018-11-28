@@ -1,7 +1,5 @@
 package project.nfaadventures;
 
-import java.util.List;
-
 /**
  * Test code
  * @author Jeroen Peeters 1643057
@@ -22,8 +20,8 @@ public class Testing
         ParserTesting();
         System.out.println("--- Test lengthMap ---");
         LengthMapTesting();
-        System.out.println("--- Test merging Automatons ---");
-        MergeTesting();
+        System.out.println("--- Test intersecting Automatons ---");
+        IntersectTesting();
     }
 
     private void StateTesting()
@@ -58,7 +56,7 @@ public class Testing
             Automaton a = parser.automaton();
             if (a != null)
             {
-                System.out.println("-> Automaton parser returned something! (so it probably works)");
+                System.out.println("-> Automaton parser returned something! (so it might work)");
             }
         }
         catch (Exception e)
@@ -92,26 +90,27 @@ public class Testing
         }
     }
 
-    private void MergeTesting()
+    private void IntersectTesting()
     {
-        AutomatonParser parser = new AutomatonParser("src/project/nfaadventures/test.aut");
+        AutomatonParser parserA = new AutomatonParser("src/project/nfaadventures/beginningOrEndingWith1.aut");
+        AutomatonParser parserB = new AutomatonParser("src/project/nfaadventures/lengthOfTwo.aut");
         try
         {
-            parser.parse();
+            parserA.parse();
+            parserB.parse();
+            Automaton A = parserA.automaton();
+            Automaton B = parserB.automaton();
+            Automaton intersection = Automaton.Intersect(A, B);
+            if (intersection == null) {
+                throw new Exception("The intersection failed!");
+            }
+            else {
+                System.out.println("The intersection returned something! (so it might work)");
+            }
         }
         catch (Exception e)
         {
-            System.out.println("Error parsing for mergetexst: e");
-        }
-
-        Automaton a = parser.automaton();
-        Automaton b = parser.automaton();
-        Automaton merged = a.Merge(b);
-        if (merged != null) {
-            System.out.println("Merging didn't blow up!");
-        }
-        else {
-            System.out.println("Merging probably went wrong!");
+            System.out.println("Parse error: " + e);
         }
     }
 }

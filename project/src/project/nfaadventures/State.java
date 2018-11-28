@@ -19,6 +19,15 @@ public class State implements Comparable<State>
     }
 
     /**
+     * gette for keys from transitionfunction
+     * @return the set of transition letters available
+     */
+    public Set<String> GetTransitions()
+    {
+        return mNextStates.keySet();
+    }
+
+    /**
      * Constructor for a state. (add next states later)
      * @param mLabel the label of this state
      * @param mIsAcceptState whether this is an accept state or not
@@ -40,7 +49,7 @@ public class State implements Comparable<State>
     {
         //Add to the list of states for transition as its key
         //Does Key exist, if not make it.
-        if (! mNextStates.keySet().contains(transition))
+        if (!mNextStates.keySet().contains(transition))
         {
             mNextStates.put(transition, new ArrayList<>());
         }
@@ -118,47 +127,111 @@ public class State implements Comparable<State>
         return mIsAcceptState;
     }
 
-    public State Merge(Set<String> alphabet, State other)
+    /**
+     * Does A Intersect B
+     * @param A first State
+     * @param B Second State
+     * @return A Intersect B
+     * @author Pieter-Jan Lavaerts
+     */
+    public static State Intersect(State A, State B)
     {
-        //call mergeHelper which recursively initializes all states using the transition function
-        Set<State> states = new TreeSet<>();
-        MergeHelper(alphabet, null, null, states, other);
+        //initialize the map for recursively created states
+        Map<String, State> states = new HashMap<>();
 
-        return new State("0 0", false);
+        return IntersectionRecursion(states, null, null, A, B);
     }
 
-    private void MergeHelper(Set<String> alphabet, State previousState, String transition, Set<State> states, State other)
+    /**
+     * initialize a new state for intersection without transitions and add it to states map
+     * @param A the first state
+     * @param B the second state
+     * @param states map that holds recursively created states
+     * @return a new state with label A.GetLabel() B.GetLabel() and acceptness A.IsAcceptState() && B.IsAcceptState()
+     * @author Pieter-Jan Lavaerts
+     */
+    private static State initNewState(Map<String, State> states, State A, State B)
     {
-        //create new merged state and add it to states
-        boolean newIsAcceptState = IsAcceptState() && other.IsAcceptState();
-        String newLabel = GetLabel() + " " + other.GetLabel();
-        State newState = new State(newLabel, newIsAcceptState);
-        states.add(newState);
+        String newLabel = A.GetLabel() + " " + B.GetLabel();
+        boolean newIsAccept = A.IsAcceptState() && B.IsAcceptState();
+        State newState = new State(newLabel, newIsAccept);
 
-        //adding the transition
-        if (previousState != null) {
-            previousState.AddNextState(transition, newState);
+        states.put(newLabel, newState);
+
+        return newState;
+    }
+
+    /**
+     * Recursively create states and add transitions for the intersection of two states
+     * @param states a list of states already initialized in previous calls
+     * @param from the previous state we came from
+     * @param transition the letter we used to come here
+     * @param A the state we got from the previous state A using transition
+     * @param B the state we got from the previous state B using transition
+     * @author Pieter-Jan Lavaerts
+     */
+    private static State IntersectionRecursion(Map<String, State> states,
+                                               State from,
+                                               String transition,
+                                               State A,
+                                               State B)
+    {
+        //check of A B al bestaat
+        //zo niet maak de state en voeg hem toe aan states
+        String newLabel = A.GetLabel() + " " + B.GetLabel();
+        if (!states.keySet().contains(newLabel)) {
+            State newState = initNewState(states, A, B);
+
+            //recursieve oproepen
+
+            //letter transities:
+            //loop over letters in A.alfabet Intersect B.alfabet
+            Set<String> transitions = new HashSet<>();
+            transitions.addAll(A.GetTransitions());
+            transitions.retainAll(B.GetTransitions());
+            transitions.remove("$");
+            for (String letter : transitions)
+            {
+                //loop over A.getNetxStatesFor(letter)
+                for (State nextA : A.GetNextStatesFor(letter))
+                {
+                    //loop over B.getNextStatesFor(letter)
+                    for (State nextB : B.GetNextStatesFor(letter))
+                    {
+                        //roep unionrecursion recursief op met from: newstate, nextA, nextB
+                        IntersectionRecursion(states, newState, letter, nextA, nextB);
+                    }
+                }
+            }
+
+            //epsilon transities:
+            //loop over states in A.getNextStatesFor($)
+            for (State nextA : A.GetNextStatesFor("$"))
+            {
+                //roep unionrecursion recursief op met from: newState, nextA, B
+                IntersectionRecursion(states, newState, "$", nextA, B);
+            }
+
+            //loop over states in B.getNextStatesFor($)
+            for (State nextB : B.GetNextStatesFor("$"))
+            {
+                //roep unionrecursion recursief op met from: newState, A, nextB
+                IntersectionRecursion(states, newState, "$", A, nextB);
+            }
         }
 
-        //recursively create states from transition function
-        //if states already exists in states don't recurse
-        //for (State thisNextState : GetAllNextStates())
-        //{
-        //    for (State otherNextState : GetAllNextStates())
-        //    {
-        //        //if the state with two merged labels doesn't exist yet
-        //        String recursiveTestLabel = thisNextState.GetLabel() + " " + otherNextState.GetLabel();
-        //        if (!states.contains(new State(thisNextState.GetLabel() + " " + otherNextState.GetLabel(), false)))
-        //        {
-        //            thisNextState.MergeHelper(newState, null, states, otherNextState);
-        //        }
-        //    }
+        //initialiseer newState
+        State newState = states.get(newLabel);
 
-        //recursively create states
-        //loop over alphabet and get allnextstates for both this and other
-        for (String letter : alphabet)
+        if (from == null) //the start state
         {
-
+           return newState;
+        }
+        else
+        {
+            //voeg de transitie from -> newState toe
+            from.AddNextState(transition, newState);
+            return null;
         }
     }
 }
