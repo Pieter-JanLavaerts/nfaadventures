@@ -208,14 +208,14 @@ public class State implements Comparable<State>
             //loop over states in A.getNextStatesFor($)
             for (State nextA : A.GetNextStatesFor("$"))
             {
-                //roep unionrecursion recursief op met from: newState, nextA, B
+                //roep intersectionrecursion recursief op met from: newState, nextA, B
                 IntersectionRecursion(states, newState, "$", nextA, B);
             }
 
             //loop over states in B.getNextStatesFor($)
             for (State nextB : B.GetNextStatesFor("$"))
             {
-                //roep unionrecursion recursief op met from: newState, A, nextB
+                //roep intersectionrecursion recursief op met from: newState, A, nextB
                 IntersectionRecursion(states, newState, "$", A, nextB);
             }
         }
