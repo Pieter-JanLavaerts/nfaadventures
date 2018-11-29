@@ -19,7 +19,7 @@ public class State implements Comparable<State>
     }
 
     /**
-     * gette for keys from transitionfunction
+     * getter for keys from transitionfunction
      * @return the set of transition letters available
      */
     public Set<String> GetTransitions()
@@ -54,7 +54,7 @@ public class State implements Comparable<State>
             mNextStates.put(transition, new ArrayList<>());
         }
 
-        //Add state to the list //TODO: does get work or do we need to replace with a copy.add(state)
+        //Add state to the list
         mNextStates.get(transition).add(state);
     }
 
