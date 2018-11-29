@@ -85,11 +85,14 @@ public class Automaton {
      * @return this Intersect other
      * @author Pieter-Jan Lavaerts
      */
-    public Automaton Intersect(Automaton other)
+    public void Intersect(Automaton other)
     {
         Set<String> newAlphabet = new HashSet<>();
         newAlphabet.addAll(GetAlphabet());
         newAlphabet.retainAll(other.GetAlphabet());
-        return new Automaton(State.Intersect(GetStartState(), other.GetStartState()), newAlphabet);
+
+        mAlphabet = newAlphabet;
+
+        mStartState = State.Intersect(GetStartState(), other.GetStartState());
     }
 }
