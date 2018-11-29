@@ -49,7 +49,7 @@ public class Testing
     private void ParserTesting()
     {
         //Parser test code
-        AutomatonParser parser = new AutomatonParser("src/project/nfaadventures/test.aut");
+        AutomatonParser parser = new AutomatonParser("adventure.aut");
         try
         {
             parser.parse();
@@ -67,7 +67,7 @@ public class Testing
 
     private void LengthMapTesting()
     {
-        AutomatonParser parser = new AutomatonParser("src/project/nfaadventures/test.aut");
+        AutomatonParser parser = new AutomatonParser("adventure.aut");
 
         try
         {
@@ -92,8 +92,8 @@ public class Testing
 
     private void IntersectTesting()
     {
-        AutomatonParser parserA = new AutomatonParser("src/project/nfaadventures/beginningOrEndingWith1.aut");
-        AutomatonParser parserB = new AutomatonParser("src/project/nfaadventures/lengthOfTwo.aut");
+        AutomatonParser parserA = new AutomatonParser("beginningOrEndingWith1.aut");
+        AutomatonParser parserB = new AutomatonParser("lengthOfTwo.aut");
         try
         {
             parserA.parse();
