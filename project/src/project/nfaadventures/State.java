@@ -19,7 +19,7 @@ public class State implements Comparable<State>
     }
 
     /**
-     * gette for keys from transitionfunction
+     * getter for keys from transitionfunction
      * @return the set of transition letters available
      */
     public Set<String> GetTransitions()
@@ -162,12 +162,12 @@ public class State implements Comparable<State>
     }
 
     /**
-     * Recursively create states and add transitions for the intersection of two states
+     * Create A Intersect B unless it already exists and recursively do the children
      * @param states a list of states already initialized in previous calls
-     * @param from the previous state we came from
+     * @param from the previous state we came from for the transition
      * @param transition the letter we used to come here
-     * @param A the state we got from the previous state A using transition
-     * @param B the state we got from the previous state B using transition
+     * @param A a state you want to intersect
+     * @param B another state you want to intersect
      * @author Pieter-Jan Lavaerts
      */
     private static State IntersectionRecursion(Map<String, State> states,
@@ -176,15 +176,15 @@ public class State implements Comparable<State>
                                                State A,
                                                State B)
     {
-        //check of A B al bestaat
-        //zo niet maak de state en voeg hem toe aan states
+        //check if the state "A B" exists
+        //if not create it and add it to states
         String newLabel = A.GetLabel() + " " + B.GetLabel();
         if (!states.keySet().contains(newLabel)) {
             State newState = initNewState(states, A, B);
 
-            //recursieve oproepen
+            //recursieve calls
 
-            //letter transities:
+            //letter transitions:
             //loop over letters in A.alfabet Intersect B.alfabet
             Set<String> transitions = new HashSet<>();
             transitions.addAll(A.GetTransitions());
@@ -198,29 +198,29 @@ public class State implements Comparable<State>
                     //loop over B.getNextStatesFor(letter)
                     for (State nextB : B.GetNextStatesFor(letter))
                     {
-                        //roep unionrecursion recursief op met from: newstate, nextA, nextB
+                        //call unionrecursion recursively with from: newstate, nextA, nextB
                         IntersectionRecursion(states, newState, letter, nextA, nextB);
                     }
                 }
             }
 
-            //epsilon transities:
+            //epsilon transitions:
             //loop over states in A.getNextStatesFor($)
             for (State nextA : A.GetNextStatesFor("$"))
             {
-                //roep intersectionrecursion recursief op met from: newState, nextA, B
+                //call intersectionrecursion recursively with from: newState, nextA, B
                 IntersectionRecursion(states, newState, "$", nextA, B);
             }
 
             //loop over states in B.getNextStatesFor($)
             for (State nextB : B.GetNextStatesFor("$"))
             {
-                //roep intersectionrecursion recursief op met from: newState, A, nextB
+                //call intersectionrecursion recursively with from: newState, A, nextB
                 IntersectionRecursion(states, newState, "$", A, nextB);
             }
         }
 
-        //initialiseer newState
+        //initialize newState
         State newState = states.get(newLabel);
 
         if (from == null) //the start state
@@ -229,7 +229,7 @@ public class State implements Comparable<State>
         }
         else
         {
-            //voeg de transitie from -> newState toe
+            //add the transition from -> newState
             from.AddNextState(transition, newState);
             return null;
         }
