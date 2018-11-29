@@ -30,10 +30,10 @@ public class level1
             Automaton doorConstraint = doorParser.automaton();
             Automaton dragonConstraint = dragonParser.automaton();
 
-            //Intersect constraints on adventure
-            adventure.Intersect(treasureConstraint);
-            adventure.Intersect(doorConstraint);
-            adventure.Intersect(dragonConstraint);
+            //intersection constraints on adventure
+            adventure.intersection(treasureConstraint);
+            adventure.intersection(doorConstraint);
+            adventure.intersection(dragonConstraint);
 
             //Get shortest path
             String path = adventure.getShortestExample(true);

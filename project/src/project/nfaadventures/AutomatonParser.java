@@ -33,17 +33,19 @@ public class AutomatonParser
 
     /**
      * Parses the file to initialize mAutomaton
+     * @throws Exception throws at incorrect form or file doesn't exist
      */
     public void parse() throws Exception
     {
         BufferedReader br = new BufferedReader(new FileReader(mFileName));
         try {
             String line = br.readLine();
-            List<State> states = new ArrayList<>();
-            List<String> acceptLabels = new ArrayList<>();
+            List<State> states = new ArrayList<>(); //list that holds states that have already been initialized
+            List<String> acceptLabels = new ArrayList<>(); //list that holds labels of states that should be initialized as accept states
             State startState = null;
             Set<String> alphabet = new HashSet<>();
 
+            //read all lines for accept labels
             while (line != null)
             {
                 String acceptLabel = parseAcceptLine(line);
@@ -54,6 +56,7 @@ public class AutomatonParser
                 line = br.readLine();
             }
 
+            //read all lines
             br.close();
             br = new BufferedReader(new FileReader(mFileName));
             line = br.readLine();
@@ -77,6 +80,11 @@ public class AutomatonParser
         }
     }
 
+    /**
+     * parses an accept line
+     * @param line
+     * @return returns the label of the accept state
+     */
     private static String parseAcceptLine(String line)
     {
         String words[] = line.split(" ");
@@ -86,6 +94,14 @@ public class AutomatonParser
         return words[0];
     }
 
+    /**
+     * parses a line of an .aut file
+     * @param line line of the aut file
+     * @param states a list of states that are already initialized
+     * @param acceptLabels a list of state labels that should be initialized as accept states
+     * @param alphabet the alphabet of the automaton
+     * @return reference to state in states that corresponds to the line in the .aut file
+     */
     private State parseLine(String line, List<State> states, List<String> acceptLabels, Set<String> alphabet)
     {
         String words[] = line.split(" ");
@@ -105,6 +121,13 @@ public class AutomatonParser
         }
     }
 
+    /**
+     * Gets a state with a certain label from a list of states or create it if it doesn't exsit
+     * @param states a list of states
+     * @param acceptStates a list of state labels of states that should be intialized as accept states
+     * @param label the label of the state to get from states
+     * @return a reference to a state in states
+     */
     private static State getState(List<State> states, List<String> acceptStates, String label)
     {
         for (State s : states) {

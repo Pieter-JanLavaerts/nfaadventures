@@ -82,10 +82,9 @@ public class Automaton {
     /**
      * Intersects two automatons
      * @param other the second automaton
-     * @return this Intersect other
-     * @author Pieter-Jan Lavaerts
+     * @return this intersection other
      */
-    public void Intersect(Automaton other)
+    public void intersection(Automaton other)
     {
         Set<String> newAlphabet = new HashSet<>();
         newAlphabet.addAll(GetAlphabet());

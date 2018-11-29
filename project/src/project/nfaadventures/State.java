@@ -128,10 +128,10 @@ public class State implements Comparable<State>
     }
 
     /**
-     * Does A Intersect B
+     * Does A intersection B
      * @param A first State
      * @param B Second State
-     * @return A Intersect B
+     * @return A intersection B
      * @author Pieter-Jan Lavaerts
      */
     public static State Intersect(State A, State B)
@@ -162,7 +162,7 @@ public class State implements Comparable<State>
     }
 
     /**
-     * Create A Intersect B unless it already exists and recursively do the children
+     * Create A intersection B unless it already exists and recursively do the children
      * @param states a list of states already initialized in previous calls
      * @param from the previous state we came from for the transition
      * @param transition the letter we used to come here
@@ -185,7 +185,7 @@ public class State implements Comparable<State>
             //recursieve calls
 
             //letter transitions:
-            //loop over letters in A.alfabet Intersect B.alfabet
+            //loop over letters in A.alfabet intersection B.alfabet
             Set<String> transitions = new HashSet<>();
             transitions.addAll(A.GetTransitions());
             transitions.retainAll(B.GetTransitions());

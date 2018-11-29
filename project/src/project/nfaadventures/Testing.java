@@ -24,6 +24,23 @@ public class Testing
         IntersectTesting();
         System.out.println("--- Multiple intersection test ---");
         MultipleIntersectTesting();
+
+        AutomatonParser a = new AutomatonParser("a.aut");
+        AutomatonParser b = new AutomatonParser("a.aut");
+        try
+        {
+            a.parse();
+            b.parse();
+            Automaton outa = a.automaton();
+            Automaton outb = b.automaton();
+
+            outa.intersection(outb);
+            System.out.println(outa.getShortestExample(true));
+        }
+        catch (Exception e)
+        {
+            System.out.println("Wrong: " + e);
+        }
     }
 
     private void StateTesting()
@@ -102,7 +119,7 @@ public class Testing
             parserB.parse();
             Automaton A = parserA.automaton();
             Automaton B = parserB.automaton();
-            A.Intersect(B);
+            A.intersection(B);
             if (A.GetStartState() == null) {
                 throw new Exception("The intersection failed!");
             }
@@ -131,8 +148,8 @@ public class Testing
             Automaton B = autB.automaton();
             Automaton C = autC.automaton();
 
-            A.Intersect(B);
-            A.Intersect(C);
+            A.intersection(B);
+            A.intersection(C);
 
             System.out.println("Shortest path: " + A.getShortestExample(true));
         }
