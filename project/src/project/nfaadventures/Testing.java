@@ -106,6 +106,7 @@ public class Testing
             }
             else {
                 System.out.println("The intersection returned something! (so it might work)");
+                System.out.println(intersection.getShortestExample(true));
             }
         }
         catch (Exception e)
