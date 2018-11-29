@@ -63,7 +63,6 @@ public class LengthMap
     {
         List<State> shortestPath = new ArrayList<>();
 
-        //TODO: Implement getShortestPathAccept
         //Find accept state with lowest value.
         int distance = 0;
         State shortestState = null;
