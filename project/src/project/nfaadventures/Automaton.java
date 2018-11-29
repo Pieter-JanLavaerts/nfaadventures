@@ -93,6 +93,9 @@ public class Automaton {
 
         mAlphabet = newAlphabet;
 
-        mStartState = State.Intersect(GetStartState(), other.GetStartState());
+        State intersection = State.Intersect(GetStartState(), other.GetStartState());
+        mStartState = intersection;
+
+        mLengthMap = new LengthMap(mStartState);
     }
 }
