@@ -100,7 +100,7 @@ public class Testing
             parserB.parse();
             Automaton A = parserA.automaton();
             Automaton B = parserB.automaton();
-            Automaton intersection = Automaton.Intersect(A, B);
+            Automaton intersection = A.Intersect(B);
             if (intersection == null) {
                 throw new Exception("The intersection failed!");
             }

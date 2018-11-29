@@ -81,16 +81,15 @@ public class Automaton {
 
     /**
      * Intersects two automatons
-     * @param A the first automaton
-     * @param B the second automaton
-     * @return A Intersect B
+     * @param other the second automaton
+     * @return this Intersect other
      * @author Pieter-Jan Lavaerts
      */
-    public static Automaton Intersect(Automaton A, Automaton B)
+    public Automaton Intersect(Automaton other)
     {
         Set<String> newAlphabet = new HashSet<>();
-        newAlphabet.addAll(A.GetAlphabet());
-        newAlphabet.retainAll(B.GetAlphabet());
-        return new Automaton(State.Intersect(A.GetStartState(), B.GetStartState()), newAlphabet);
+        newAlphabet.addAll(GetAlphabet());
+        newAlphabet.retainAll(other.GetAlphabet());
+        return new Automaton(State.Intersect(GetStartState(), other.GetStartState()), newAlphabet);
     }
 }
